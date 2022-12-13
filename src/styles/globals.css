@@ -4,9 +4,9 @@
 
 @layer components {
   .vote-btn {
-    @apply flex h-48 max-w-xs cursor-pointer flex-col items-center justify-between space-y-2 rounded-xl bg-white/10 p-4 hover:bg-white/20 sm:col-span-3 sm:h-60;
+    @apply flex h-40 max-w-xs cursor-pointer flex-col items-center justify-between space-y-2 rounded-xl bg-white/10 p-4 hover:bg-white/20 sm:col-span-3 sm:h-60;
   }
   .vote-img {
-    @apply relative h-36 w-36 sm:h-48 sm:w-48;
+    @apply relative h-32 w-32 flex-1 sm:h-48 sm:w-48;
   }
 }
