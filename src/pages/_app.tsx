@@ -20,7 +20,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta property="og:image" content="/pika.png" />
         <meta name="twitter:image" content="/pika.png" />
       </Head>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </>
   );
 };
