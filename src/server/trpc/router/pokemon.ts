@@ -1,14 +1,27 @@
-import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
-
-import { PokemonClient } from "pokenode-ts";
+import { getOptionsForVote } from "@/utils/getRandomPokemon";
+import { TRPCError } from "@trpc/server";
 
 export const pokemonRouter = router({
-  getPokemonById: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .query(async ({ input }) => {
-      const api = new PokemonClient();
-      const pokemon = await api.getPokemonById(input.id);
-      return pokemon;
-    }),
+  getPokemonPairs: publicProcedure.query(async ({ ctx }) => {
+    const [first, second] = getOptionsForVote();
+    const pokemons = await ctx.prisma.pokemon.findMany({
+      where: {
+        id: {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          in: [first!, second!],
+        },
+      },
+    });
+    if (pokemons.length !== 2)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: `Could not fetch 2 pokemons.`,
+      });
+
+    return {
+      firstPokemon: pokemons[0],
+      secondPokemon: pokemons[1],
+    };
+  }),
 });

@@ -2,8 +2,9 @@ import { type RouterOutputs } from "@/utils/trpc";
 import Image from "next/image";
 import { type FC } from "react";
 
+type Tkey = keyof RouterOutputs["pokemon"]["getPokemonPairs"];
 type Props = {
-  pokemon: RouterOutputs["pokemon"]["getPokemonById"];
+  pokemon: RouterOutputs["pokemon"]["getPokemonPairs"][Tkey];
 };
 
 const Pokemon: FC<Props> = ({ pokemon }) => {
@@ -11,7 +12,7 @@ const Pokemon: FC<Props> = ({ pokemon }) => {
     <button className="vote-btn flex-1">
       <div className="vote-img">
         <Image
-          src={pokemon?.sprites?.front_default || ""}
+          src={pokemon?.spriteUrl || ""}
           alt={pokemon?.name || ""}
           fill
           className="object-fit animate-fade-in"
