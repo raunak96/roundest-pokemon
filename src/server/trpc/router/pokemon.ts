@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { publicProcedure, router } from "../trpc";
 import { getOptionsForVote } from "@/utils/getRandomPokemon";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 
 export const pokemonRouter = router({
   getPokemonPairs: publicProcedure.query(async ({ ctx }) => {
@@ -8,7 +10,6 @@ export const pokemonRouter = router({
     const pokemons = await ctx.prisma.pokemon.findMany({
       where: {
         id: {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           in: [first!, second!],
         },
       },
@@ -20,8 +21,24 @@ export const pokemonRouter = router({
       });
 
     return {
-      firstPokemon: pokemons[0],
-      secondPokemon: pokemons[1],
+      firstPokemon: pokemons[0]!,
+      secondPokemon: pokemons[1]!,
     };
   }),
+  castVote: publicProcedure
+    .input(
+      z.object({
+        votedFor: z.number(),
+        votedAgainst: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vote = await ctx.prisma.vote.create({
+        data: {
+          votedAgainstId: input.votedAgainst,
+          votedForId: input.votedFor,
+        },
+      });
+      return { success: true, vote };
+    }),
 });
