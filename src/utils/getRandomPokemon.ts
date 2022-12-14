@@ -1,3 +1,5 @@
+/* This returns two random ids for pokemons */
+
 import arrayShuffle from "array-shuffle";
 
 const MAX_DEX_ID = 493;

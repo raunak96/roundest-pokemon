@@ -20,7 +20,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <meta property="og:image" content="/pika.png" />
         <meta name="twitter:image" content="/pika.png" />
       </Head>
-      <Component {...pageProps} />
+      <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+        <Component {...pageProps} />
+      </main>
     </>
   );
 };

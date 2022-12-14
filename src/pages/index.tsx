@@ -4,13 +4,16 @@ import { trpc } from "@/utils/trpc";
 import { type NextPage } from "next";
 import Image from "next/image";
 
-const Home: NextPage = () => {
-  const { data: pokemonPair, isLoading } =
-    trpc.pokemon.getPokemonPairs.useQuery(undefined, {
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    });
+const HomePage: NextPage = () => {
+  const {
+    data: pokemonPair,
+    isLoading,
+    isRefetching,
+  } = trpc.pokemon.getPokemonPairs.useQuery(undefined, {
+    refetchInterval: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+  });
 
   const utils = trpc.useContext();
 
@@ -38,43 +41,41 @@ const Home: NextPage = () => {
   };
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-1 flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-center text-3xl font-extrabold tracking-wide text-white sm:text-4xl sm:tracking-widest">
-            Roundest <span className="text-[hsl(280,100%,70%)]">Poké</span>Mon
-          </h1>
-          {isLoading || !pokemonPair ? (
-            <Image
-              src="/rings.svg"
-              width={200}
-              height={200}
-              alt="Loading..."
-              className="flex-1"
-            />
-          ) : (
-            <div className="flex flex-1 grid-cols-1 flex-col gap-4 sm:grid sm:grid-cols-7 sm:items-center md:gap-8">
-              {pokemonPair.firstPokemon && (
-                <Pokemon
-                  pokemon={pokemonPair.firstPokemon}
-                  vote={() => voteForRoundest(pokemonPair.firstPokemon.id)}
-                  disabled={voteMutation.isLoading}
-                />
-              )}
-              <div className="text-center text-2xl">Vs</div>
-              {pokemonPair.secondPokemon && (
-                <Pokemon
-                  pokemon={pokemonPair.secondPokemon}
-                  vote={() => voteForRoundest(pokemonPair.secondPokemon.id)}
-                  disabled={voteMutation.isLoading}
-                />
-              )}
-            </div>
-          )}
-        </div>
-        <Footer />
-      </main>
+      <div className="container flex flex-1 flex-col items-center justify-center gap-12 px-4 py-16">
+        <h1 className="text-center text-3xl font-extrabold tracking-wide text-white sm:text-4xl sm:tracking-widest">
+          Roundest <span className="text-[hsl(280,100%,70%)]">Poké</span>Mon
+        </h1>
+        {isLoading || !pokemonPair || isRefetching ? (
+          <Image
+            src="/rings.svg"
+            width={200}
+            height={200}
+            alt="Loading..."
+            className="flex-1"
+          />
+        ) : (
+          <div className="flex flex-1 grid-cols-1 flex-col gap-4 sm:grid sm:grid-cols-7 sm:items-center md:gap-8">
+            {pokemonPair.firstPokemon && (
+              <Pokemon
+                pokemon={pokemonPair.firstPokemon}
+                vote={() => voteForRoundest(pokemonPair.firstPokemon.id)}
+                disabled={voteMutation.isLoading}
+              />
+            )}
+            <div className="text-center text-2xl">Vs</div>
+            {pokemonPair.secondPokemon && (
+              <Pokemon
+                pokemon={pokemonPair.secondPokemon}
+                vote={() => voteForRoundest(pokemonPair.secondPokemon.id)}
+                disabled={voteMutation.isLoading}
+              />
+            )}
+          </div>
+        )}
+      </div>
+      <Footer />
     </>
   );
 };
 
-export default Home;
+export default HomePage;
