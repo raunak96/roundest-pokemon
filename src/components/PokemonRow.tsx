@@ -1,4 +1,4 @@
-import { generateCountPercent } from "@/pages/results";
+import { generateCountPercent } from "@/utils/getPercentVotes";
 import { type RoundestPokemonsType } from "@/utils/getPokemonByVotes";
 import Image from "next/image";
 import { type FC } from "react";

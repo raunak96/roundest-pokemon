@@ -6,16 +6,10 @@ import {
 import Head from "next/head";
 import PokemonRow from "@/components/PokemonRow";
 import Link from "next/link";
+import { generateCountPercent } from "@/utils/getPercentVotes";
 
 type Props = {
   pokemons: RoundestPokemonsType;
-};
-export const generateCountPercent = (pokemon: RoundestPokemonsType[number]) => {
-  const { VoteFor, VoteAgainst } = pokemon._count;
-  if (VoteFor + VoteAgainst === 0) {
-    return 0;
-  }
-  return (VoteFor / (VoteFor + VoteAgainst)) * 100;
 };
 
 const ResultsPage: NextPage<Props> = ({ pokemons }) => {
@@ -26,7 +20,7 @@ const ResultsPage: NextPage<Props> = ({ pokemons }) => {
       </Head>
       <Link
         href="/"
-        className="fixed top-4 left-6 text-2xl uppercase tracking-widest hover:text-[hsl(280,100%,70%)]"
+        className="top-4 left-6 mr-auto mt-5 ml-5 text-2xl uppercase tracking-widest hover:text-[hsl(280,100%,70%)] lg:fixed"
       >
         Vote Now
       </Link>
